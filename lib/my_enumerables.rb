@@ -56,22 +56,18 @@ module Enumerable
 
   def my_inject(*args)
     case args
-    in [a] if a.is_a? Symbol
-      sym = a
-    in [a] if a.is_a? Object
-      accumulator = a
-    in [a, b]
-      accumulator = a
-      sym = b
+    in [Symbol => sym]
+    in [Object => initial]
+    in [a => initial, b => sym]
     else
-      accumulator = nil
+      initial = nil
       sym = nil
     end
 
-    memo = accumulator || first
+    memo = initial || first
 
     my_each_with_index do |el, index|
-      next if accumulator.nil? && index.zero?
+      next if initial.nil? && index.zero?
 
       memo =
         if block_given?
